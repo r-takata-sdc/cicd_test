@@ -70,11 +70,16 @@ jobs:
     steps:
       - checkout
       - restore_npm
-      - run: git config user.name $GITHUB_NAME
-      - run: git config user.email $GITHUB_EMAIL
+      - run: 
+          name: github name set
+          command: git config user.name $GITHUB_NAME
+      - run:
+          name: github email set
+          command: git config user.email $GITHUB_EMAIL
       - run:
           name: Deploy
           command: npm run deploy
+      - save_npm
 
 workflows:
   pull-request:
