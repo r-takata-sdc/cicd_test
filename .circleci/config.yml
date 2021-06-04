@@ -63,6 +63,18 @@ jobs:
           name: Test
           command: npm run test:unit
       - save_npm
+  
+  deploy:
+    executor:
+    name: default
+    steps:
+      - checkout
+      - restore_npm
+      - run: git config user.name $GITHUB_NAME
+      - run: git config user.email $GITHUB_EMAIL
+      - run:
+          name: Deploy
+          command: npm run deploy
 
 workflows:
   pull-request:
@@ -77,3 +89,9 @@ workflows:
       - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
